@@ -32,7 +32,7 @@ const DEFAULT_CONFIG = {
 
   /* ---------- 云托管模式（推荐：免域名免备案） ---------- */
   /** 云托管环境 ID，形如 prod-1gxxxxxx（云托管控制台右上角「环境」→「我的环境」复制；注意 ≠ 云开发环境 ID） */
-  cloudEnv: '',
+  cloudEnv: 'prod-d4gmdqiay7dff0e4e',
   /** 云托管服务名，在「云托管 - 服务列表」里看，如 yuyi-rag */
   cloudService: 'yuyi-rag',
 
