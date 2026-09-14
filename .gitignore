@@ -16,3 +16,6 @@ server/data/
 .workbuddy/
 界面预览.html
 overview.md
+
+# 微信开发者工具的个人本地配置（自动生成，不入库）
+project.private.config.json
