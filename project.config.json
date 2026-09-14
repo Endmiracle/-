@@ -1,7 +1,7 @@
 {
   "description": "羽衣电竞问答助手 - 微信小程序客户端（对接本地部署 RAGFlow）",
   "miniprogramRoot": "miniprogram/",
-  "appid": "touristappid",
+  "appid": "wx58aa1127f14e0cb6",
   "compileType": "miniprogram",
   "libVersion": "latest",
   "projectname": "yuyi-esports-qa",
