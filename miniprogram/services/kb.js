@@ -145,6 +145,19 @@ function createDocFromText(datasetId, name, text) {
  */
 function uploadDocument(datasetId, filePath, name, onProgress) {
   const cfg = config.load();
+
+  // 云托管模式下 wx.uploadFile 走不通（它不经过 callContainer 内网隧道，
+  // 也没有可配置的 uploadFile 合法域名）——直接给出可执行的指引，避免原生报错。
+  if (cfg.mode === 'cloud') {
+    return Promise.reject(
+      normalizeError({
+        code: 400,
+        message:
+          '云托管模式不支持在小程序内上传文件。请在项目仓库更新 server/knowledge 下的文档，推送后在云托管控制台「发布」新版本，系统会自动重建知识库。',
+      })
+    );
+  }
+
   let endpoint;
   try {
     endpoint = config.resolve(`datasets/${datasetId}/documents`);

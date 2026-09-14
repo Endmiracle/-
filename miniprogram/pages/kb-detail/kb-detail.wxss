@@ -112,6 +112,11 @@ page {
   background: linear-gradient(96deg, #5b6cff, #8b5cf6);
 }
 
+/* 云托管模式下「上传文件」不可用，仅作视觉弱化（仍可点开看指引） */
+.mode__item.is-disabled {
+  opacity: 0.55;
+}
+
 .field__textarea {
   width: 100%;
   min-height: 240rpx;

@@ -1,6 +1,7 @@
 const kbService = require('../../services/kb');
 const store = require('../../utils/store');
 const util = require('../../utils/util');
+const config = require('../../utils/config');
 
 const ACCEPT_EXT = ['txt', 'md', 'docx', 'pdf', 'csv', 'json', 'html'];
 
@@ -33,6 +34,9 @@ Page({
 
     hasParsing: false,
     acceptExt: ACCEPT_EXT,
+
+    /** 云托管模式下不支持在小程序内上传文件（wx.uploadFile 不走内网隧道） */
+    isCloud: false,
   },
 
   onLoad(options) {
@@ -41,7 +45,7 @@ Page({
       this.setData({ loading: false, error: '缺少知识库参数' });
       return;
     }
-    this.setData({ id });
+    this.setData({ id, isCloud: config.load().mode === 'cloud' });
     this.loadAll();
 
     // 解析是服务端异步进行的，这里轮询进度
@@ -139,6 +143,16 @@ Page({
   },
 
   onChooseFile() {
+    if (this.data.isCloud || config.load().mode === 'cloud') {
+      wx.showModal({
+        title: '云托管模式',
+        content:
+          '云托管模式不支持在小程序内上传文件。请在项目仓库更新 server/knowledge 下的文档，推送后在云托管控制台「发布」新版本，系统会自动重建知识库。',
+        showCancel: false,
+        confirmText: '知道了',
+      });
+      return;
+    }
     wx.chooseMessageFile({
       count: 1,
       type: 'file',

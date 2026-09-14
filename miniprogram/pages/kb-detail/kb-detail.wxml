@@ -46,8 +46,8 @@
         <view class="mode__item {{addMode === 'text' ? 'is-active' : ''}}" data-mode="text" bindtap="onSwitchMode">
           粘贴文本
         </view>
-        <view class="mode__item {{addMode === 'file' ? 'is-active' : ''}}" data-mode="file" bindtap="onSwitchMode">
-          上传文件
+        <view class="mode__item {{addMode === 'file' ? 'is-active' : ''}} {{isCloud ? 'is-disabled' : ''}}" data-mode="file" bindtap="onSwitchMode">
+          上传文件{{isCloud ? '（云托管不可用）' : ''}}
         </view>
       </view>
 
@@ -88,21 +88,32 @@
 
       <!-- 上传文件 -->
       <block wx:else>
-        <view class="field">
-          <view class="field__hint hint-block">支持 txt / md / csv / json / html / docx / pdf</view>
+        <view wx:if="{{isCloud}}" class="field">
+          <view class="field__hint hint-block">云托管模式不支持在小程序内上传文件。</view>
           <view class="field__hint hint-block">
-            PDF 为尽力而为抽取，扫描件请先 OCR 转文本；旧版 .doc 请另存为 .docx
+            请在项目仓库更新 server/knowledge 下的文档，推送到 GitHub 后到云托管控制台「发布」新版本，系统会自动重建知识库。
           </view>
-          <view wx:if="{{uploading}}" class="progress">
-            <view class="progress__bar">
-              <view class="progress__inner" style="width: {{uploadPercent}}%"></view>
-            </view>
-            <view class="progress__text">正在上传 {{uploadName}} · {{uploadPercent}}%</view>
-          </view>
-          <view class="btn btn--primary btn--block {{uploading ? 'is-disabled' : ''}}" bindtap="onChooseFile">
-            {{uploading ? '上传中…' : '选择文件并上传'}}
+          <view class="field__hint hint-block">
+            仅想临时试一段文字：可切回「粘贴文本」；但云托管容器不持久，重启或重新发布会丢失。
           </view>
         </view>
+        <block wx:else>
+          <view class="field">
+            <view class="field__hint hint-block">支持 txt / md / csv / json / html / docx / pdf</view>
+            <view class="field__hint hint-block">
+              PDF 为尽力而为抽取，扫描件请先 OCR 转文本；旧版 .doc 请另存为 .docx
+            </view>
+            <view wx:if="{{uploading}}" class="progress">
+              <view class="progress__bar">
+                <view class="progress__inner" style="width: {{uploadPercent}}%"></view>
+              </view>
+              <view class="progress__text">正在上传 {{uploadName}} · {{uploadPercent}}%</view>
+            </view>
+            <view class="btn btn--primary btn--block {{uploading ? 'is-disabled' : ''}}" bindtap="onChooseFile">
+              {{uploading ? '上传中…' : '选择文件并上传'}}
+            </view>
+          </view>
+        </block>
       </block>
     </view>
 
