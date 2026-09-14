@@ -94,7 +94,7 @@ function resolve(path) {
   // 云托管：不走 HTTP 域名，交给 wx.cloud.callContainer 走内网
   if (cfg.mode === 'cloud') {
     if (!String(cfg.cloudEnv || '').trim()) {
-      throw { code: 400, message: '请先在设置页填写云开发环境 ID' };
+      throw { code: 400, message: '请先在设置页填写云托管环境 ID' };
     }
     if (!String(cfg.cloudService || '').trim()) {
       throw { code: 400, message: '请先在设置页填写云托管服务名' };

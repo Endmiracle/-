@@ -102,7 +102,7 @@ Page({
       const env = String(form.cloudEnv || '').trim();
       const service = String(form.cloudService || '').trim();
       if (!env) {
-        util.toast('请填写云开发环境 ID');
+        util.toast('请填写云托管环境 ID');
         return;
       }
       if (!service) {

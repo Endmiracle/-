@@ -22,17 +22,17 @@
   <view class="card">
     <block wx:if="{{mode === 'cloud'}}">
       <view class="field">
-        <view class="field__label">云开发环境 ID</view>
+        <view class="field__label">云托管环境 ID</view>
         <input
           class="field__input"
           value="{{form.cloudEnv}}"
-          placeholder="cloud1-8gxxxxxxxx"
+          placeholder="prod-1gxxxxxxxx"
           placeholder-class="ph"
           data-field="cloudEnv"
           bindinput="onInput"
         />
         <view class="field__hint">
-          在「云开发控制台 → 设置 → 环境 ID」查看，形如 cloud1-8gxxxxxx（不是环境名称）
+          在「微信云托管控制台 → 右上角「环境」下拉 → 我的环境」复制，形如 prod-1gxxxxxx（不是云开发环境 ID，也不是环境名称）
         </view>
       </view>
       <view class="row-line"></view>
