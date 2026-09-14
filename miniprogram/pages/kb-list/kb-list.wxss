@@ -1,0 +1,149 @@
+page {
+  background: #0b0e1a;
+}
+
+/* ============================================================
+ * 顶部概览
+ * ============================================================ */
+
+.kb-hero {
+  margin: 0 -28rpx 24rpx;
+  padding: 28rpx 28rpx 32rpx;
+  background: linear-gradient(160deg, #241b52 0%, #123047 100%);
+  border-bottom: 2rpx solid var(--line);
+}
+
+.kb-hero__title {
+  font-size: 38rpx;
+  font-weight: 600;
+  color: var(--text-1);
+}
+
+.kb-hero__desc {
+  margin-top: 10rpx;
+  font-size: 24rpx;
+  line-height: 1.7;
+  color: var(--text-3);
+}
+
+.kb-hero__stats {
+  display: flex;
+  gap: 16rpx;
+  margin-top: 26rpx;
+}
+
+.kb-hero__stat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4rpx;
+  padding: 18rpx 0;
+  border-radius: var(--radius-m);
+  background: rgba(255, 255, 255, 0.06);
+  border: 2rpx solid rgba(255, 255, 255, 0.08);
+}
+
+.kb-hero__num {
+  font-size: 38rpx;
+  font-weight: 600;
+  color: #9db4ff;
+  line-height: 1.1;
+}
+
+.kb-hero__label {
+  font-size: 22rpx;
+  color: var(--text-3);
+}
+
+/* ============================================================
+ * 新建表单
+ * ============================================================ */
+
+.form {
+  margin-bottom: 8rpx;
+}
+
+.form__title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: var(--text-1);
+  margin-bottom: 8rpx;
+}
+
+.form__actions {
+  display: flex;
+  gap: 16rpx;
+  margin-top: 20rpx;
+}
+
+/* ============================================================
+ * 知识库卡片
+ * ============================================================ */
+
+.kb-item {
+  margin-bottom: 20rpx;
+}
+
+.kb-item--hover {
+  background: var(--surface-2);
+}
+
+.kb-item__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16rpx;
+}
+
+.kb-item__name {
+  flex: 1;
+  min-width: 0;
+  font-size: 32rpx;
+  font-weight: 600;
+  color: var(--text-1);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.kb-item__desc {
+  margin-top: 10rpx;
+  font-size: 24rpx;
+  line-height: 1.7;
+  color: var(--text-3);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.kb-item__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10rpx;
+  margin-top: 20rpx;
+}
+
+.kb-item__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16rpx;
+  margin-top: 18rpx;
+  padding-top: 16rpx;
+  border-top: 2rpx solid var(--line-soft);
+  font-size: 21rpx;
+  color: var(--text-4);
+}
+
+.kb-item__vec {
+  flex: none;
+  color: var(--text-3);
+}
+
+.empty__text--sub {
+  max-width: 520rpx;
+  font-size: 24rpx;
+  color: var(--text-4);
+}

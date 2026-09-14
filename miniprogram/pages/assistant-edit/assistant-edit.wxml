@@ -1,0 +1,235 @@
+<view class="page-wrap form-page">
+  <view wx:if="{{loading}}" class="empty">
+    <view class="spinner"></view>
+    <view class="empty__text">正在读取配置…</view>
+  </view>
+
+  <block wx:else>
+    <!-- 基本信息 -->
+    <view class="section-title">基本信息</view>
+    <view class="card">
+      <view class="field">
+        <view class="field__label">助手名称</view>
+        <input
+          class="field__input"
+          value="{{form.name}}"
+          placeholder="如：羽衣电竞问答助手"
+          placeholder-class="ph"
+          maxlength="40"
+          data-field="name"
+          bindinput="onInput"
+        />
+      </view>
+      <view class="row-line"></view>
+      <view class="field">
+        <view class="field__label">一句话说明（选填）</view>
+        <input
+          class="field__input"
+          value="{{form.description}}"
+          placeholder="这个助手负责回答什么"
+          placeholder-class="ph"
+          maxlength="60"
+          data-field="description"
+          bindinput="onInput"
+        />
+      </view>
+      <view class="row-line"></view>
+      <view class="field">
+        <view class="field__label">开场白</view>
+        <textarea
+          class="field__textarea field__textarea--sm"
+          value="{{form.prologue}}"
+          placeholder="进入问答页时展示的第一句话"
+          placeholder-class="ph"
+          maxlength="300"
+          auto-height
+          data-field="prologue"
+          bindinput="onInput"
+        />
+      </view>
+    </view>
+
+    <!-- 绑定知识库 -->
+    <view class="section-title">
+      绑定知识库
+      <text class="section-tip">已选 {{form.datasetIds.length}} 个</text>
+    </view>
+    <view class="card card--pad">
+      <view wx:if="{{datasetOptions.length === 0}}" class="kb-empty">
+        还没有知识库。<text class="kb-empty__link" catchtap="onGoKb">去创建</text>
+      </view>
+      <view wx:else class="kb-grid">
+        <view
+          wx:for="{{datasetOptions}}"
+          wx:key="id"
+          class="kb-chip {{item.selected ? 'is-active' : ''}}"
+          data-id="{{item.id}}"
+          bindtap="onToggleDataset"
+        >
+          <view class="kb-chip__name">{{item.name}}</view>
+          <view class="kb-chip__meta">{{item.chunkCount}} 切片</view>
+        </view>
+      </view>
+      <view wx:if="{{datasetOptions.length}}" class="field__hint">
+        助手只会在勾选的知识库里检索。绑定多个知识库时，各库内部先归一化再统一排序。
+      </view>
+    </view>
+
+    <!-- 检索参数 -->
+    <view class="section-title">检索参数</view>
+    <view class="card">
+      <view class="slider-row">
+        <view class="slider-row__head">
+          <text class="slider-row__label">召回条数 Top-K</text>
+          <text class="slider-row__value">{{form.topK}}</text>
+        </view>
+        <slider
+          min="1"
+          max="20"
+          step="1"
+          value="{{form.topK}}"
+          activeColor="#7c5cff"
+          backgroundColor="#262e4a"
+          block-size="20"
+          data-field="topK"
+          bindchange="onSlider"
+          bindchanging="onSlider"
+        />
+        <view class="slider-row__hint">送给大模型的片段数量。太多会稀释重点并消耗更多 token</view>
+      </view>
+
+      <view class="row-line"></view>
+
+      <view class="slider-row">
+        <view class="slider-row__head">
+          <text class="slider-row__label">相似度阈值</text>
+          <text class="slider-row__value">{{form.similarityThreshold}}</text>
+        </view>
+        <slider
+          min="0"
+          max="1"
+          step="0.01"
+          value="{{form.similarityThreshold}}"
+          activeColor="#7c5cff"
+          backgroundColor="#262e4a"
+          block-size="20"
+          data-field="similarityThreshold"
+          bindchange="onSlider"
+          bindchanging="onSlider"
+        />
+        <view class="slider-row__hint">{{adviceThreshold}}</view>
+      </view>
+
+      <view class="row-line"></view>
+
+      <view class="slider-row">
+        <view class="slider-row__head">
+          <text class="slider-row__label">混合权重（BM25 占比）</text>
+          <text class="slider-row__value">{{form.hybridAlpha}}</text>
+        </view>
+        <slider
+          min="0"
+          max="1"
+          step="0.05"
+          value="{{form.hybridAlpha}}"
+          activeColor="#7c5cff"
+          backgroundColor="#262e4a"
+          block-size="20"
+          data-field="hybridAlpha"
+          bindchange="onSlider"
+          bindchanging="onSlider"
+        />
+        <view class="slider-row__hint">1 = 纯关键词匹配，0 = 纯向量。仅在服务端配置了向量模型时生效</view>
+      </view>
+    </view>
+
+    <!-- 生成参数 -->
+    <view class="section-title">生成参数</view>
+    <view class="card">
+      <view class="slider-row">
+        <view class="slider-row__head">
+          <text class="slider-row__label">温度</text>
+          <text class="slider-row__value">{{form.temperature}}</text>
+        </view>
+        <slider
+          min="0"
+          max="1.5"
+          step="0.1"
+          value="{{form.temperature}}"
+          activeColor="#7c5cff"
+          backgroundColor="#262e4a"
+          block-size="20"
+          data-field="temperature"
+          bindchange="onSlider"
+          bindchanging="onSlider"
+        />
+        <view class="slider-row__hint">知识库问答建议 0.1~0.5，过高容易脱离检索内容发挥</view>
+      </view>
+
+      <view class="row-line"></view>
+
+      <view class="field">
+        <view class="field__label">最大输出长度（tokens）</view>
+        <input
+          class="field__input"
+          type="number"
+          value="{{form.maxTokens}}"
+          placeholder="1024"
+          placeholder-class="ph"
+          data-field="maxTokens"
+          bindinput="onInput"
+        />
+      </view>
+
+      <view class="row-line"></view>
+
+      <view class="field">
+        <view class="field__label">指定模型（选填）</view>
+        <input
+          class="field__input"
+          value="{{form.model}}"
+          placeholder="留空则用服务端默认模型"
+          placeholder-class="ph"
+          data-field="model"
+          bindinput="onInput"
+        />
+      </view>
+    </view>
+
+    <!-- 系统提示词 -->
+    <view class="section-title">
+      系统提示词
+      <text class="section-tip" bindtap="onTogglePrompt">{{promptOpen ? '收起' : '展开编辑'}}</text>
+    </view>
+    <view class="card card--pad">
+      <view wx:if="{{!promptOpen}}" class="prompt-preview">{{form.systemPrompt}}</view>
+      <block wx:else>
+        <textarea
+          class="field__textarea"
+          value="{{form.systemPrompt}}"
+          placeholder="定义助手的角色与回答规则"
+          placeholder-class="ph"
+          maxlength="-1"
+          auto-height
+          data-field="systemPrompt"
+          bindinput="onInput"
+        />
+        <view class="prompt-actions">
+          <view class="btn btn--ghost btn--sm" bindtap="onResetPrompt">恢复默认模板</view>
+        </view>
+        <view class="field__hint">
+          内置模板里 {name} 会自动替换为助手名称。模板已包含「检索不到就明说」的约束，建议保留。
+        </view>
+      </block>
+    </view>
+
+    <view class="form-tip">{{isEdit ? '修改后点下方「保存」生效' : '创建后会自动设为当前使用的助手'}}</view>
+  </block>
+</view>
+
+<view class="footer-bar">
+  <view class="btn btn--ghost btn--sm" bindtap="onCancel">取消</view>
+  <view class="btn btn--primary flex-1 {{submitting ? 'is-disabled' : ''}}" bindtap="onSubmit">
+    {{submitting ? '提交中…' : (isEdit ? '保存' : '创建助手')}}
+  </view>
+</view>

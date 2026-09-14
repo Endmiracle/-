@@ -1,0 +1,235 @@
+.row {
+  display: flex;
+  margin-bottom: 32rpx;
+}
+
+.row--user {
+  justify-content: flex-end;
+}
+
+.row--assistant {
+  align-items: flex-start;
+  gap: 16rpx;
+}
+
+/* ============================================================
+ * 头像
+ * ============================================================ */
+
+.avatar {
+  flex: none;
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #0b0e1a;
+  background: linear-gradient(135deg, #5b6cff, #8b5cf6);
+  box-shadow: 0 4rpx 14rpx rgba(124, 92, 255, 0.32);
+}
+
+/* ============================================================
+ * 气泡
+ * ============================================================ */
+
+.bubble {
+  position: relative;
+  padding: 22rpx 26rpx;
+  border-radius: var(--radius-m);
+  font-size: 29rpx;
+  line-height: 1.7;
+  word-break: break-word;
+}
+
+.bubble--user {
+  max-width: 78%;
+  color: #eef1fa;
+  background: linear-gradient(135deg, #4b3ba8, #2b4f8f);
+  border: 2rpx solid rgba(124, 92, 255, 0.4);
+  border-bottom-right-radius: 6rpx;
+}
+
+.bubble--assistant {
+  max-width: 100%;
+  color: var(--text-1);
+  background: var(--surface);
+  border: 2rpx solid var(--line);
+  border-top-left-radius: 6rpx;
+}
+
+.bubble--error {
+  border-color: rgba(248, 113, 113, 0.4);
+}
+
+.bubble__text {
+  white-space: pre-wrap;
+}
+
+.assistant-body {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ============================================================
+ * 错误与提示
+ * ============================================================ */
+
+.bubble__error {
+  color: #f87171;
+  font-size: 26rpx;
+  line-height: 1.6;
+}
+
+.warn-line {
+  margin-top: 12rpx;
+  padding: 10rpx 16rpx;
+  border-radius: 8rpx;
+  font-size: 22rpx;
+  color: #fbbf24;
+  background: rgba(251, 191, 36, 0.1);
+  border: 2rpx solid rgba(251, 191, 36, 0.26);
+}
+
+.warn-line--info {
+  color: #a78bfa;
+  background: var(--brand-soft);
+  border-color: var(--brand-line);
+}
+
+/* ============================================================
+ * 引用来源
+ * ============================================================ */
+
+.refs-head {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  margin-top: 16rpx;
+  padding: 14rpx 18rpx;
+  border-radius: 12rpx;
+  background: var(--surface-2);
+  border: 2rpx solid var(--line);
+  font-size: 24rpx;
+  color: var(--text-2);
+}
+
+.refs-head__icon {
+  color: #9db4ff;
+  font-size: 26rpx;
+}
+
+.refs-head__text {
+  flex: 1;
+  min-width: 0;
+}
+
+.refs-head__toggle {
+  color: #a78bfa;
+  font-size: 24rpx;
+}
+
+.refs-list {
+  margin-top: 12rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.ref-item {
+  padding: 18rpx;
+  border-radius: 12rpx;
+  background: rgba(28, 35, 64, 0.72);
+  border: 2rpx solid var(--line);
+}
+
+.ref-item__head {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+}
+
+.ref-item__index {
+  flex: none;
+  width: 32rpx;
+  height: 32rpx;
+  border-radius: 8rpx;
+  background: var(--brand-soft);
+  border: 2rpx solid var(--brand-line);
+  color: #a78bfa;
+  font-size: 20rpx;
+  text-align: center;
+  line-height: 28rpx;
+}
+
+.ref-item__doc {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 24rpx;
+  color: var(--text-1);
+}
+
+.ref-item__score {
+  flex: none;
+  font-size: 22rpx;
+  color: #9db4ff;
+}
+
+.ref-item__heading {
+  margin-top: 10rpx;
+  font-size: 22rpx;
+  color: var(--text-3);
+}
+
+.ref-item__content {
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  line-height: 1.7;
+  color: var(--text-2);
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ============================================================
+ * 操作区
+ * ============================================================ */
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  margin-top: 12rpx;
+  padding-left: 4rpx;
+}
+
+.actions__time {
+  font-size: 22rpx;
+  color: var(--text-4);
+}
+
+.actions__btn {
+  font-size: 22rpx;
+  color: var(--text-3);
+  padding: 6rpx 14rpx;
+  border-radius: 8rpx;
+  background: var(--surface-2);
+  border: 2rpx solid var(--line);
+}
+
+.actions__btn:active {
+  opacity: 0.7;
+}
+
+/* 品牌图是白底方图，用白色圆角卡片承载，在深色底上同样清晰 */
+.avatar--image {
+  background: #ffffff;
+  overflow: hidden;
+  box-shadow: 0 4rpx 14rpx rgba(0, 0, 0, 0.34);
+}

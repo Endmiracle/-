@@ -1,0 +1,46 @@
+{
+  "description": "羽衣电竞问答助手 - 微信小程序客户端（对接本地部署 RAGFlow）",
+  "miniprogramRoot": "miniprogram/",
+  "appid": "touristappid",
+  "compileType": "miniprogram",
+  "libVersion": "latest",
+  "projectname": "yuyi-esports-qa",
+  "setting": {
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "minified": true,
+    "urlCheck": false,
+    "coverView": true,
+    "ignoreUploadUnusedFiles": true,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    }
+  },
+  "condition": {
+    "miniprogram": {
+      "list": [
+        {
+          "name": "问答首页",
+          "pathName": "pages/chat/chat",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "会话记录",
+          "pathName": "pages/history/history",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "连接设置",
+          "pathName": "pages/settings/settings",
+          "query": "",
+          "scene": null
+        }
+      ]
+    }
+  }
+}

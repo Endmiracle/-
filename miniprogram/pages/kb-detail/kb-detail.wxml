@@ -1,0 +1,236 @@
+<view class="page-wrap">
+  <view wx:if="{{loading}}" class="empty">
+    <view class="spinner"></view>
+    <view class="empty__text">正在加载…</view>
+  </view>
+
+  <view wx:elif="{{error && !dataset}}" class="empty">
+    <view class="empty__icon">!</view>
+    <view class="empty__text">{{error}}</view>
+  </view>
+
+  <block wx:else>
+    <!-- 概览 -->
+    <view class="card card--pad head">
+      <view class="head__row">
+        <view class="head__name">{{dataset.name}}</view>
+        <view class="head__edit" bindtap="onEdit">编辑</view>
+      </view>
+      <view wx:if="{{dataset.description}}" class="head__desc">{{dataset.description}}</view>
+
+      <view class="head__stats">
+        <view class="head__stat">
+          <text class="head__num">{{dataset.docCount}}</text>
+          <text class="head__label">文档</text>
+        </view>
+        <view class="head__stat">
+          <text class="head__num head__num--brand">{{dataset.chunkCount}}</text>
+          <text class="head__label">切片</text>
+        </view>
+        <view class="head__stat">
+          <text class="head__num">{{dataset.charCount}}</text>
+          <text class="head__label">字符</text>
+        </view>
+      </view>
+
+      <view class="head__meta">
+        <text>切片长度 {{dataset.chunkSize}} 字 / 重叠 {{dataset.chunkOverlap}} 字</text>
+        <text>{{dataset.embeddingModel ? '向量：' + dataset.embeddingModel : '检索方式：BM25 关键词'}}</text>
+      </view>
+    </view>
+
+    <!-- 新增文档 -->
+    <view class="section-title">添加文档</view>
+    <view class="card">
+      <view class="mode">
+        <view class="mode__item {{addMode === 'text' ? 'is-active' : ''}}" data-mode="text" bindtap="onSwitchMode">
+          粘贴文本
+        </view>
+        <view class="mode__item {{addMode === 'file' ? 'is-active' : ''}}" data-mode="file" bindtap="onSwitchMode">
+          上传文件
+        </view>
+      </view>
+
+      <!-- 粘贴文本 -->
+      <block wx:if="{{addMode === 'text'}}">
+        <view class="field">
+          <view class="field__label">文档标题</view>
+          <input
+            class="field__input"
+            value="{{textForm.name}}"
+            placeholder="如：羽衣电竞陪玩制度"
+            placeholder-class="ph"
+            maxlength="60"
+            data-field="name"
+            bindinput="onTextInput"
+          />
+        </view>
+        <view class="field">
+          <view class="field__label">正文内容</view>
+          <textarea
+            class="field__textarea"
+            value="{{textForm.content}}"
+            placeholder="把资料粘贴进来，建议用小标题分段，切片效果更好"
+            placeholder-class="ph"
+            maxlength="-1"
+            auto-height
+            data-field="content"
+            bindinput="onTextInput"
+          />
+          <view class="field__hint">当前 {{textForm.content.length}} 字，保存后自动切片</view>
+        </view>
+        <view class="pad-bottom">
+          <view class="btn btn--primary btn--block {{submitting ? 'is-disabled' : ''}}" bindtap="onSubmitText">
+            {{submitting ? '提交中…' : '保存并切片'}}
+          </view>
+        </view>
+      </block>
+
+      <!-- 上传文件 -->
+      <block wx:else>
+        <view class="field">
+          <view class="field__hint hint-block">支持 txt / md / csv / json / html / docx / pdf</view>
+          <view class="field__hint hint-block">
+            PDF 为尽力而为抽取，扫描件请先 OCR 转文本；旧版 .doc 请另存为 .docx
+          </view>
+          <view wx:if="{{uploading}}" class="progress">
+            <view class="progress__bar">
+              <view class="progress__inner" style="width: {{uploadPercent}}%"></view>
+            </view>
+            <view class="progress__text">正在上传 {{uploadName}} · {{uploadPercent}}%</view>
+          </view>
+          <view class="btn btn--primary btn--block {{uploading ? 'is-disabled' : ''}}" bindtap="onChooseFile">
+            {{uploading ? '上传中…' : '选择文件并上传'}}
+          </view>
+        </view>
+      </block>
+    </view>
+
+    <!-- 文档列表 -->
+    <view class="section-title">
+      文档（{{documents.length}}）
+      <text wx:if="{{hasParsing}}" class="parsing-tip">解析中，进度自动刷新</text>
+    </view>
+
+    <view wx:if="{{documents.length === 0}}" class="card card--pad empty-inline">
+      <text>还没有文档，用上面的方式添加一份试试</text>
+    </view>
+
+    <view
+      wx:for="{{documents}}"
+      wx:key="id"
+      class="card card--pad doc {{item.status === 'failed' ? 'doc--failed' : ''}}"
+      data-id="{{item.id}}"
+      bindtap="onDocTap"
+      bindlongpress="onDocLongPress"
+      hover-class="doc--hover"
+    >
+      <view class="doc__head">
+        <view class="doc__name">{{item.name}}</view>
+        <view class="pill pill--{{item.status === 'parsed' ? 'success' : (item.status === 'failed' ? 'danger' : 'warning')}}">
+          {{item.statusText}}
+        </view>
+      </view>
+
+      <view class="doc__meta">
+        <text>{{item.sizeText}}</text>
+        <text wx:if="{{item.status === 'parsed'}}">{{item.chunkCount}} 切片 · {{item.charCount}} 字符</text>
+        <text wx:elif="{{item.status === 'parsing'}}">{{item.progressMsg || '处理中'}}</text>
+      </view>
+
+      <view wx:if="{{item.status === 'parsing'}}" class="progress">
+        <view class="progress__bar">
+          <view class="progress__inner" style="width: {{item.progressPercent}}%"></view>
+        </view>
+      </view>
+
+      <view wx:if="{{item.error}}" class="doc__error">{{item.error}}</view>
+      <view wx:if="{{item.warning}}" class="doc__warning">{{item.warning}}</view>
+    </view>
+
+    <view wx:if="{{documents.length}}" class="hint">点文档看切片，长按可重新解析或删除</view>
+
+    <!-- 检索测试 -->
+    <view class="section-title">检索测试</view>
+    <view class="card card--pad">
+      <view class="field__hint" style="margin:0 0 16rpx">
+        不改动助手配置，直接看这个问题能召回哪些片段、相似度多少。调阈值前先在这里验证。
+      </view>
+      <view class="test-row">
+        <input
+          class="test-input"
+          value="{{testQuestion}}"
+          placeholder="输入一个真实问题，如：炸单扣多少钱"
+          placeholder-class="ph"
+          bindinput="onTestInput"
+          bindconfirm="onTest"
+        />
+        <view class="btn btn--primary btn--sm {{testing ? 'is-disabled' : ''}}" bindtap="onTest">
+          {{testing ? '检索中' : '测试'}}
+        </view>
+      </view>
+
+      <block wx:if="{{testResult}}">
+        <view class="test-summary">
+          命中 {{testResult.total}} 个片段
+          <text wx:if="{{testResult.stats.vectorUsed}}"> · 已启用向量检索</text>
+          <text wx:else> · 纯 BM25 检索</text>
+          <text wx:if="{{testResult.stats.vectorError}}"> · 向量不可用（{{testResult.stats.vectorError}}）</text>
+        </view>
+        <view wx:if="{{testResult.total === 0}}" class="test-empty">
+          没有命中。可能原因：文档还在解析中 / 问题用词与文档差异过大 / 知识库内容确实不含该主题。
+        </view>
+        <view
+          wx:for="{{testResult.chunks}}"
+          wx:for-item="chunk"
+          wx:key="id"
+          class="test-item"
+          data-content="{{chunk.content}}"
+          bindtap="onCopyChunk"
+        >
+          <view class="test-item__head">
+            <text class="test-item__score">{{chunk.similarityText}}</text>
+            <text class="test-item__doc">{{chunk.docName}}</text>
+          </view>
+          <view wx:if="{{chunk.heading}}" class="test-item__heading">{{chunk.heading}}</view>
+          <view class="test-item__content">{{chunk.content}}</view>
+        </view>
+      </block>
+    </view>
+
+    <view class="danger-zone">
+      <view class="btn btn--danger btn--sm btn--block" bindtap="onDeleteDataset">删除这个知识库</view>
+    </view>
+  </block>
+</view>
+
+<!-- 切片预览面板 -->
+<view wx:if="{{panelOpen}}" class="panel">
+  <view class="panel__mask" bindtap="onClosePanel"></view>
+  <view class="panel__body">
+    <view class="panel__head">
+      <view class="panel__title">{{panelTitle}}</view>
+      <view class="panel__close" bindtap="onClosePanel">关闭</view>
+    </view>
+    <scroll-view class="panel__scroll" scroll-y>
+      <view wx:if="{{panelLoading}}" class="empty">
+        <view class="spinner"></view>
+      </view>
+      <view
+        wx:for="{{panelChunks}}"
+        wx:for-item="chunk"
+        wx:for-index="chunkIndex"
+        wx:key="id"
+        class="panel-chunk"
+      >
+        <view class="panel-chunk__head">
+          <text class="panel-chunk__index">#{{chunkIndex + 1}}</text>
+          <text wx:if="{{chunk.heading}}" class="panel-chunk__heading">{{chunk.heading}}</text>
+          <text class="panel-chunk__len">{{chunk.charCount}} 字</text>
+        </view>
+        <view class="panel-chunk__content">{{chunk.content}}</view>
+      </view>
+      <view class="panel__bottom"></view>
+    </scroll-view>
+  </view>
+</view>

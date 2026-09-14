@@ -1,0 +1,114 @@
+<view class="page-col">
+  <!-- 顶部助手信息条 -->
+  <view class="chat-bar">
+    <image class="chat-bar__avatar" src="{{brandAvatar}}" mode="aspectFill" />
+    <view class="chat-bar__meta">
+      <view class="chat-bar__name">{{assistantName}}</view>
+      <view class="chat-bar__sub">{{assistantMeta}}</view>
+    </view>
+    <view class="chat-bar__btn" bindtap="onNewSession" hover-class="chat-bar__btn--hover">新会话</view>
+    <view class="chat-bar__btn" bindtap="onOpenHistory" hover-class="chat-bar__btn--hover">记录</view>
+  </view>
+
+  <!-- 未就绪引导 -->
+  <view wx:if="{{blockReason}}" class="block">
+    <view class="block__icon">!</view>
+    <view class="block__title">{{blockReason === 'no-assistant' ? '还没有可用的助手' : '连接不上知识库引擎'}}</view>
+    <view class="block__text">{{blockText}}</view>
+    <view wx:if="{{blockReason === 'no-assistant'}}" class="btn btn--primary btn--sm" bindtap="onOpenAssistant">
+      去创建助手
+    </view>
+    <view wx:else class="btn btn--primary btn--sm" bindtap="onOpenSettings">去检查设置</view>
+  </view>
+
+  <!-- 消息区 -->
+  <scroll-view
+    wx:else
+    class="msg-scroll"
+    scroll-y
+    scroll-top="{{scrollTop}}"
+    scroll-with-animation
+    bindscroll="onScroll"
+    enhanced
+    show-scrollbar="{{false}}"
+  >
+    <!-- 欢迎区 -->
+    <block wx:if="{{messages.length === 0}}">
+      <view class="welcome">
+        <image class="welcome__logo" src="{{brandLogo}}" mode="aspectFit" />
+        <view class="welcome__title grad-text">{{assistantName}}</view>
+        <view class="welcome__desc">{{prologue || welcome}}</view>
+      </view>
+
+      <view class="quick">
+        <view class="quick__label">可以试试这样问</view>
+        <view
+          wx:for="{{quickQuestions}}"
+          wx:key="*this"
+          class="quick__item"
+          data-question="{{item}}"
+          bindtap="onQuickTap"
+          hover-class="quick__item--hover"
+        >
+          {{item}}
+        </view>
+      </view>
+    </block>
+
+    <!-- 消息列表 -->
+    <view wx:else class="msg-list">
+      <chat-bubble
+        wx:for="{{messages}}"
+        wx:key="_id"
+        item="{{item}}"
+        avatar-src="{{brandAvatar}}"
+        bind:togglerefs="onToggleRefs"
+        bind:copy="onCopy"
+        bind:retry="onRetry"
+        bind:referencetap="onReferenceTap"
+        bind:longpress="onLongPress"
+      />
+    </view>
+
+    <view class="msg-bottom"></view>
+  </scroll-view>
+
+  <!-- 输入区 -->
+  <view class="composer">
+    <view class="composer__box">
+      <textarea
+        class="composer__input"
+        value="{{input}}"
+        placeholder="问制度问题，如：炸单扣多少钱"
+        placeholder-class="composer__placeholder"
+        auto-height
+        maxlength="500"
+        cursor-spacing="20"
+        confirm-type="send"
+        disable-default-padding
+        bindinput="onInput"
+        bindconfirm="onSend"
+        bindfocus="onFocus"
+      />
+      <view
+        wx:if="{{sending && canStop}}"
+        class="composer__send composer__send--stop"
+        bindtap="onStop"
+        hover-class="composer__send--hover"
+      >停止</view>
+      <view
+        wx:elif="{{sending}}"
+        class="composer__send is-disabled"
+      >生成中</view>
+      <view
+        wx:else
+        class="composer__send {{input ? '' : 'is-disabled'}}"
+        bindtap="onSend"
+        hover-class="composer__send--hover"
+      >发送</view>
+    </view>
+    <view class="composer__tip">
+      <text>回答由本地知识库检索生成，重要信息请核对引用来源</text>
+    </view>
+  </view>
+</view>

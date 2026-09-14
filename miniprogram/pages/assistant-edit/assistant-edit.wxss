@@ -1,0 +1,143 @@
+page {
+  background: #0b0e1a;
+}
+
+.form-page {
+  padding-bottom: calc(200rpx + env(safe-area-inset-bottom));
+}
+
+.row-line {
+  height: 2rpx;
+  margin-left: 26rpx;
+  background: var(--line-soft);
+}
+
+.field__textarea--sm {
+  min-height: 120rpx;
+}
+
+.section-tip {
+  margin-left: auto;
+  font-size: 22rpx;
+  font-weight: 400;
+  color: #a78bfa;
+}
+
+/* ============================================================
+ * 知识库选择
+ * ============================================================ */
+
+.kb-empty {
+  font-size: 25rpx;
+  color: var(--text-3);
+}
+
+.kb-empty__link {
+  color: #9db4ff;
+  padding: 0 6rpx;
+}
+
+.kb-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 14rpx;
+}
+
+.kb-chip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16rpx;
+  padding: 20rpx 22rpx;
+  border-radius: 12rpx;
+  background: var(--surface-2);
+  border: 2rpx solid var(--line);
+  transition: all 0.16s ease;
+}
+
+.kb-chip.is-active {
+  background: var(--brand-soft);
+  border-color: var(--brand-line);
+}
+
+.kb-chip__name {
+  flex: 1;
+  min-width: 0;
+  font-size: 27rpx;
+  color: var(--text-1);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.kb-chip.is-active .kb-chip__name {
+  color: #c4b5fd;
+  font-weight: 500;
+}
+
+.kb-chip__meta {
+  flex: none;
+  font-size: 21rpx;
+  color: var(--text-4);
+}
+
+/* ============================================================
+ * 滑块行
+ * ============================================================ */
+
+.slider-row {
+  padding: 22rpx 26rpx 10rpx;
+}
+
+.slider-row__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16rpx;
+}
+
+.slider-row__label {
+  font-size: 27rpx;
+  color: var(--text-1);
+}
+
+.slider-row__value {
+  font-size: 27rpx;
+  font-weight: 600;
+  color: #9db4ff;
+}
+
+.slider-row__hint {
+  margin-top: 4rpx;
+  font-size: 21rpx;
+  line-height: 1.6;
+  color: var(--text-4);
+}
+
+/* ============================================================
+ * 提示词
+ * ============================================================ */
+
+.prompt-preview {
+  font-size: 24rpx;
+  line-height: 1.75;
+  color: var(--text-3);
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  white-space: pre-wrap;
+}
+
+.prompt-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 18rpx;
+}
+
+.form-tip {
+  padding: 36rpx 0 8rpx;
+  text-align: center;
+  font-size: 22rpx;
+  color: var(--text-4);
+}

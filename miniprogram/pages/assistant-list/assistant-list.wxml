@@ -1,0 +1,66 @@
+<view class="page-wrap">
+  <view class="hero">
+    <view class="hero__title">聊天助手</view>
+    <view class="hero__desc">
+      助手 = 提示词 + 绑定的知识库 + 检索参数。问答时先按参数检索知识库，再把片段交给大模型作答。
+    </view>
+  </view>
+
+  <view wx:if="{{loading}}" class="empty">
+    <view class="spinner"></view>
+    <view class="empty__text">正在读取助手…</view>
+  </view>
+
+  <view wx:elif="{{error}}" class="empty">
+    <view class="empty__icon">!</view>
+    <view class="empty__text">{{error}}</view>
+    <view class="btn btn--primary btn--sm" bindtap="onGoSettings">去检查服务设置</view>
+  </view>
+
+  <view wx:elif="{{list.length === 0}}" class="empty">
+    <view class="empty__icon">＋</view>
+    <view class="empty__text">还没有助手</view>
+    <view class="empty__text empty__sub">创建一个，绑定知识库后就能开始问答</view>
+    <view class="btn btn--primary btn--sm" bindtap="onCreate">新建助手</view>
+  </view>
+
+  <block wx:else>
+    <view class="section-title">全部助手（{{list.length}}）</view>
+    <view
+      wx:for="{{list}}"
+      wx:key="id"
+      class="card card--pad item {{item.id === currentId ? 'item--current' : ''}}"
+      data-id="{{item.id}}"
+      bindtap="onSelect"
+      bindlongpress="onLongPress"
+      hover-class="item--hover"
+    >
+      <view class="item__head">
+        <image class="item__avatar" src="/assets/mascot-head.jpg" mode="aspectFill" />
+        <view class="item__info">
+          <view class="item__name">
+            {{item.name}}
+            <text wx:if="{{item.id === currentId}}" class="item__badge">当前使用</text>
+          </view>
+          <view class="item__meta">
+            {{item.datasetCount}} 个知识库 · Top {{item.topK}} · 阈值 {{item.similarityThreshold}}
+          </view>
+        </view>
+        <view class="item__edit" catchtap="onEdit" data-id="{{item.id}}">编辑</view>
+      </view>
+
+      <view wx:if="{{item.description}}" class="item__desc">{{item.description}}</view>
+
+      <view class="item__tags">
+        <text wx:for="{{item.datasets}}" wx:for-item="ds" wx:key="id" class="pill pill--brand">{{ds.name}}</text>
+        <text wx:if="{{item.datasetCount === 0}}" class="pill pill--warning">未绑定知识库</text>
+        <text wx:if="{{item.model}}" class="pill">{{item.model}}</text>
+      </view>
+    </view>
+    <view class="hint">点卡片切换使用的助手，长按可删除</view>
+  </block>
+</view>
+
+<view class="fab" bindtap="onCreate" hover-class="fab--hover">
+  <view class="fab__plus"></view>
+</view>

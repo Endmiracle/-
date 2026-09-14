@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "chat-bubble": "/components/chat-bubble/chat-bubble"
+  },
+  "navigationBarTitleText": "羽衣电竞问答助手",
+  "backgroundTextStyle": "dark"
+}

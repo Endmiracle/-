@@ -1,0 +1,18 @@
+node_modules/
+.DS_Store
+Thumbs.db
+*.log
+
+# 代理服务的本地密钥配置（含 API Key，绝不入库）
+server/.env
+server/*.pem
+server/*.key
+server/*.crt
+
+# 运行时数据（本地知识库索引/会话，容器靠 AUTO_SEED 自动重建，不入库）
+server/data/
+
+# 项目记忆与本地预览产物（不入库）
+.workbuddy/
+界面预览.html
+overview.md

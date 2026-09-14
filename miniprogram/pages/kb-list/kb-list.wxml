@@ -1,0 +1,121 @@
+<view class="page-wrap">
+  <!-- 概览 -->
+  <view class="kb-hero">
+    <view class="kb-hero__title">知识库</view>
+    <view class="kb-hero__desc">
+      上传资料 → 自动切片 → 绑定给助手，问答时按相关度检索并附引用来源。
+    </view>
+    <view class="kb-hero__stats">
+      <view class="kb-hero__stat">
+        <text class="kb-hero__num">{{list.length}}</text>
+        <text class="kb-hero__label">知识库</text>
+      </view>
+      <view class="kb-hero__stat">
+        <text class="kb-hero__num">{{totalDocs}}</text>
+        <text class="kb-hero__label">文档</text>
+      </view>
+      <view class="kb-hero__stat">
+        <text class="kb-hero__num">{{totalChunks}}</text>
+        <text class="kb-hero__label">切片</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 新建表单 -->
+  <view wx:if="{{showForm}}" class="card card--pad form">
+    <view class="form__title">新建知识库</view>
+    <view class="field">
+      <view class="field__label">名称</view>
+      <input
+        class="field__input"
+        value="{{form.name}}"
+        placeholder="如：羽衣电竞赛事资料"
+        placeholder-class="ph"
+        maxlength="40"
+        data-field="name"
+        bindinput="onFormInput"
+      />
+    </view>
+    <view class="field">
+      <view class="field__label">说明（选填）</view>
+      <input
+        class="field__input"
+        value="{{form.description}}"
+        placeholder="这个知识库放什么内容"
+        placeholder-class="ph"
+        maxlength="60"
+        data-field="description"
+        bindinput="onFormInput"
+      />
+    </view>
+    <view class="form__actions">
+      <view class="btn btn--ghost btn--sm" bindtap="onToggleForm">取消</view>
+      <view class="btn btn--primary btn--sm flex-1 {{submitting ? 'is-disabled' : ''}}" bindtap="onSubmit">
+        {{submitting ? '创建中…' : '创建'}}
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载中 -->
+  <view wx:if="{{loading}}" class="empty">
+    <view class="spinner"></view>
+    <view class="empty__text">正在读取知识库…</view>
+  </view>
+
+  <!-- 连接失败 -->
+  <view wx:elif="{{error}}" class="empty">
+    <view class="empty__icon">!</view>
+    <view class="empty__text">{{error}}</view>
+    <view class="btn btn--primary btn--sm" bindtap="onGoSettings">去检查服务设置</view>
+  </view>
+
+  <!-- 空态 -->
+  <view wx:elif="{{list.length === 0}}" class="empty">
+    <view class="empty__icon">＋</view>
+    <view class="empty__text">还没有知识库</view>
+    <view class="empty__text empty__text--sub">
+      先建一个，再把等级制度、罚款标准、炸单规则等制度文档放进去。
+      若已用 npm run seed 导入过制度，请确认服务地址正确后下拉刷新。
+    </view>
+    <view class="btn btn--primary btn--sm" bindtap="onToggleForm">新建知识库</view>
+  </view>
+
+  <!-- 列表 -->
+  <block wx:else>
+    <view class="section-title">全部知识库（{{list.length}}）</view>
+    <view
+      wx:for="{{list}}"
+      wx:key="id"
+      class="card card--pad kb-item"
+      data-id="{{item.id}}"
+      bindtap="onOpen"
+      bindlongpress="onLongPress"
+      hover-class="kb-item--hover"
+    >
+      <view class="kb-item__head">
+        <view class="kb-item__name">{{item.name}}</view>
+        <view class="chevron"></view>
+      </view>
+      <view wx:if="{{item.description}}" class="kb-item__desc">{{item.description}}</view>
+
+      <view class="kb-item__stats">
+        <text class="pill pill--brand">{{item.chunkCount}} 切片</text>
+        <text class="pill">{{item.docCount}} 文档</text>
+        <text wx:if="{{item.parsingDocCount}}" class="pill pill--warning">{{item.parsingDocCount}} 解析中</text>
+        <text wx:if="{{item.failedDocCount}}" class="pill pill--danger">{{item.failedDocCount}} 失败</text>
+      </view>
+
+      <view class="kb-item__foot">
+        <text>{{item.charCount}} 字符 · 切片 {{item.chunkSize}}/重叠 {{item.chunkOverlap}}</text>
+        <text wx:if="{{item.embeddingModel}}" class="kb-item__vec">向量：{{item.embeddingModel}}</text>
+        <text wx:else class="kb-item__vec">检索：BM25</text>
+      </view>
+    </view>
+    <view class="hint">长按知识库可重命名或删除</view>
+  </block>
+</view>
+
+<!-- 新建入口 -->
+<view class="fab" bindtap="onToggleForm" hover-class="fab--hover">
+  <view class="fab__plus"></view>
+</view>

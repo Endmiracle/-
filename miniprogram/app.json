@@ -1,0 +1,45 @@
+{
+  "pages": [
+    "pages/chat/chat",
+    "pages/kb-list/kb-list",
+    "pages/kb-detail/kb-detail",
+    "pages/assistant-list/assistant-list",
+    "pages/assistant-edit/assistant-edit",
+    "pages/history/history",
+    "pages/settings/settings"
+  ],
+  "window": {
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#0b0e1a",
+    "navigationBarTitleText": "羽衣电竞·制度问答",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#0b0e1a",
+    "enablePullDownRefresh": false
+  },
+  "tabBar": {
+    "color": "#6f7899",
+    "selectedColor": "#22d3ee",
+    "backgroundColor": "#11162a",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/chat/chat",
+        "text": "问答"
+      },
+      {
+        "pagePath": "pages/kb-list/kb-list",
+        "text": "知识库"
+      },
+      {
+        "pagePath": "pages/assistant-list/assistant-list",
+        "text": "助手"
+      },
+      {
+        "pagePath": "pages/settings/settings",
+        "text": "设置"
+      }
+    ]
+  },
+  "lazyCodeLoading": "requiredComponents",
+  "sitemapLocation": "sitemap.json"
+}

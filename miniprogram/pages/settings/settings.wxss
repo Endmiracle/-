@@ -1,0 +1,196 @@
+page {
+  background: #0b0e1a;
+}
+
+.page-wrap {
+  padding-bottom: calc(220rpx + env(safe-area-inset-bottom));
+}
+
+.row-line {
+  height: 2rpx;
+  margin-left: 26rpx;
+  background: var(--line-soft);
+}
+
+.row-link__sub {
+  margin-top: 4rpx;
+  font-size: 21rpx;
+  color: var(--text-4);
+}
+
+/* ============================================================
+ * 连接方式
+ * ============================================================ */
+
+.mode-card {
+  padding: 22rpx;
+  border-radius: 12rpx;
+  background: var(--surface-2);
+  border: 2rpx solid var(--line);
+  transition: all 0.16s ease;
+}
+
+.mode-card + .mode-card {
+  margin-top: 16rpx;
+}
+
+.mode-card.is-active {
+  background: var(--brand-soft);
+  border-color: var(--brand-line);
+}
+
+.mode-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16rpx;
+}
+
+.mode-card__label {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--text-1);
+}
+
+.mode-card.is-active .mode-card__label {
+  color: #c4b5fd;
+}
+
+.mode-card__check {
+  flex: none;
+  padding: 2rpx 14rpx;
+  border-radius: 8rpx;
+  font-size: 19rpx;
+  color: #9db4ff;
+  background: rgba(34, 211, 238, 0.12);
+  border: 2rpx solid rgba(34, 211, 238, 0.3);
+}
+
+.mode-card__desc {
+  margin-top: 10rpx;
+  font-size: 23rpx;
+  line-height: 1.7;
+  color: var(--text-3);
+}
+
+/* ============================================================
+ * 说明卡
+ * ============================================================ */
+
+.note {
+  margin-top: 20rpx;
+  border-color: rgba(124, 92, 255, 0.28);
+}
+
+.note__title {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #a78bfa;
+}
+
+.note__text {
+  margin-top: 12rpx;
+  font-size: 23rpx;
+  line-height: 1.8;
+  color: var(--text-2);
+}
+
+.note__toggle {
+  margin-top: 16rpx;
+  font-size: 23rpx;
+  color: #9db4ff;
+}
+
+.note__steps {
+  margin-top: 16rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.note__step {
+  padding: 16rpx 18rpx;
+  border-radius: 10rpx;
+  background: rgba(11, 14, 26, 0.6);
+  border: 2rpx solid var(--line);
+  font-size: 22rpx;
+  line-height: 1.7;
+  color: var(--text-2);
+}
+
+/* ============================================================
+ * 自检步骤
+ * ============================================================ */
+
+.steps {
+  margin-top: 24rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 14rpx;
+}
+
+.step {
+  display: flex;
+  align-items: flex-start;
+  gap: 14rpx;
+  padding: 16rpx 18rpx;
+  border-radius: 12rpx;
+  background: var(--surface-2);
+  border: 2rpx solid var(--line);
+}
+
+.step__dot {
+  flex: none;
+  width: 36rpx;
+  height: 36rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22rpx;
+  font-weight: 600;
+}
+
+.step__dot.is-ok {
+  color: #34d399;
+  background: rgba(52, 211, 153, 0.14);
+  border: 2rpx solid rgba(52, 211, 153, 0.36);
+}
+
+.step__dot.is-fail {
+  color: #f87171;
+  background: rgba(248, 113, 113, 0.14);
+  border: 2rpx solid rgba(248, 113, 113, 0.36);
+}
+
+.step__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.step__label {
+  font-size: 25rpx;
+  color: var(--text-1);
+}
+
+.step__detail {
+  margin-top: 6rpx;
+  font-size: 22rpx;
+  line-height: 1.6;
+  color: var(--text-3);
+  word-break: break-all;
+}
+
+/* ============================================================
+ * 底部说明
+ * ============================================================ */
+
+.foot-tip {
+  display: flex;
+  flex-direction: column;
+  gap: 6rpx;
+  padding: 40rpx 8rpx 16rpx;
+  text-align: center;
+  font-size: 21rpx;
+  color: var(--text-4);
+}

@@ -1,0 +1,245 @@
+<view class="page-wrap">
+  <!-- 连接方式 -->
+  <view class="section-title">连接方式</view>
+  <view class="card card--pad">
+    <view
+      wx:for="{{modes}}"
+      wx:key="value"
+      class="mode-card {{mode === item.value ? 'is-active' : ''}}"
+      data-mode="{{item.value}}"
+      bindtap="onSelectMode"
+    >
+      <view class="mode-card__head">
+        <text class="mode-card__label">{{item.label}}</text>
+        <text wx:if="{{mode === item.value}}" class="mode-card__check">已选</text>
+      </view>
+      <view class="mode-card__desc">{{item.desc}}</view>
+    </view>
+  </view>
+
+  <!-- 服务地址 / 云托管配置 -->
+  <view class="section-title">{{mode === 'cloud' ? '云托管配置' : '服务地址'}}</view>
+  <view class="card">
+    <block wx:if="{{mode === 'cloud'}}">
+      <view class="field">
+        <view class="field__label">云开发环境 ID</view>
+        <input
+          class="field__input"
+          value="{{form.cloudEnv}}"
+          placeholder="cloud1-8gxxxxxxxx"
+          placeholder-class="ph"
+          data-field="cloudEnv"
+          bindinput="onInput"
+        />
+        <view class="field__hint">
+          在「云开发控制台 → 设置 → 环境 ID」查看，形如 cloud1-8gxxxxxx（不是环境名称）
+        </view>
+      </view>
+      <view class="row-line"></view>
+      <view class="field">
+        <view class="field__label">云托管服务名</view>
+        <input
+          class="field__input"
+          value="{{form.cloudService}}"
+          placeholder="yuyi-rag"
+          placeholder-class="ph"
+          data-field="cloudService"
+          bindinput="onInput"
+        />
+        <view class="field__hint">在「云托管 → 服务列表」里看服务名称，不是容器名</view>
+      </view>
+      <view class="row-line"></view>
+      <view class="field">
+        <view class="field__hint hint-block">
+          改这两项后要完全退出小程序再进才会生效。云托管走内网，不需要配域名也不需要备案；代价是不支持流式输出，回答会一次性返回。
+        </view>
+      </view>
+    </block>
+
+    <block wx:elif="{{mode === 'proxy'}}">
+      <view class="field">
+        <view class="field__label">知识库引擎地址</view>
+        <input
+          class="field__input"
+          value="{{form.proxyBase}}"
+          placeholder="http://192.168.1.10:8787"
+          placeholder-class="ph"
+          data-field="proxyBase"
+          bindinput="onInput"
+        />
+        <view class="field__hint">
+          开发者工具填 http://127.0.0.1:8787；真机调试填电脑的局域网 IP（跑引擎的机器）
+        </view>
+      </view>
+      <view class="row-line"></view>
+      <view class="field">
+        <view class="field__label">访问令牌（可选）</view>
+        <input
+          class="field__input"
+          value="{{form.accessToken}}"
+          placeholder="与服务端 ACCESS_TOKEN 保持一致"
+          placeholder-class="ph"
+          data-field="accessToken"
+          bindinput="onInput"
+        />
+        <view class="field__hint">服务端设置了 ACCESS_TOKEN 时必填，留空表示服务端未开启鉴权</view>
+      </view>
+    </block>
+
+    <block wx:else>
+      <view class="field">
+        <view class="field__label">RAGFlow 地址</view>
+        <input
+          class="field__input"
+          value="{{form.ragflowBase}}"
+          placeholder="http://127.0.0.1:9380"
+          placeholder-class="ph"
+          data-field="ragflowBase"
+          bindinput="onInput"
+        />
+      </view>
+      <view class="row-line"></view>
+      <view class="field">
+        <view class="field__label">API Key</view>
+        <input
+          class="field__input"
+          value="{{form.apiKey}}"
+          placeholder="RAGFlow 页面右上角头像 → API 中获取"
+          placeholder-class="ph"
+          data-field="apiKey"
+          bindinput="onInput"
+        />
+      </view>
+    </block>
+  </view>
+
+  <view class="card card--pad note">
+    <view class="note__title">直连模式为什么只能在开发工具里用</view>
+    <view class="note__text">
+      手机上的 127.0.0.1 指向手机自己，且小程序正式环境要求 HTTPS + 已备案域名。
+      所以真机与上线请用「代理服务」模式：把引擎部署在能访问知识库的机器上，用内网穿透或
+      正式域名 + 证书暴露出来即可。
+    </view>
+    <view class="note__toggle" bindtap="onToggleGuide">{{showGuide ? '收起详细步骤' : '查看详细步骤'}}</view>
+    <view wx:if="{{showGuide}}" class="note__steps">
+      <view class="note__step">1. 在项目根目录启动引擎：npm run proxy</view>
+      <view class="note__step">2. 开发者工具：详情 → 本地设置 → 勾选「不校验合法域名」，地址填 http://127.0.0.1:8787</view>
+      <view class="note__step">3. 真机调试：把地址换成电脑局域网 IP，如 http://192.168.1.10:8787（手机与电脑同一 WiFi）</view>
+      <view class="note__step">4. 上线：引擎部署到有公网域名的服务器，配 HTTPS 证书后把域名填到上面</view>
+    </view>
+  </view>
+
+  <!-- 当前助手 -->
+  <view class="section-title">当前助手</view>
+  <view class="card">
+    <view class="row-link" bindtap="onGoAssistant" hover-class="row-link--hover">
+      <text>使用的助手</text>
+      <view class="row-link__value">
+        <text>{{form.chatName || '未选择'}}</text>
+        <view class="chevron"></view>
+      </view>
+    </view>
+    <view class="row-line"></view>
+    <view class="row-link" bindtap="onGoKb" hover-class="row-link--hover">
+      <text>知识库管理</text>
+      <view class="row-link__value">
+        <text>上传与切片</text>
+        <view class="chevron"></view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 请求设置 -->
+  <view class="section-title">请求设置</view>
+  <view class="card">
+    <view class="row-link">
+      <view>
+        <view>流式输出</view>
+        <view class="row-link__sub">{{mode === 'cloud' ? '云托管模式不支持，回答一次性返回' : '逐字显示回答；关闭则等全文生成后一次性展示'}}</view>
+      </view>
+      <switch
+        checked="{{form.stream}}"
+        disabled="{{mode === 'cloud'}}"
+        color="#7c5cff"
+        bindchange="onSwitchStream"
+      />
+    </view>
+    <view class="row-line"></view>
+    <view class="field">
+      <view class="field__label">超时时间（毫秒）</view>
+      <input
+        class="field__input"
+        type="number"
+        value="{{form.timeout}}"
+        placeholder="90000"
+        placeholder-class="ph"
+        data-field="timeout"
+        bindinput="onInput"
+      />
+      <view class="field__hint">本地模型推理较慢时调大，建议 60000 ~ 300000</view>
+    </view>
+  </view>
+
+  <view class="section-title">连通性自检</view>
+  <view class="card card--pad">
+    <view class="btn btn--primary btn--block {{testing ? 'is-disabled' : ''}}" bindtap="onTest">
+      {{testing ? '检测中…' : '开始自检'}}
+    </view>
+    <view class="field__hint" style="text-align:center">
+      依次检查配置完整性、助手列表、知识库绑定、会话创建能力
+    </view>
+
+    <view wx:if="{{steps.length}}" class="steps">
+      <view wx:for="{{steps}}" wx:key="label" class="step">
+        <view class="step__dot {{item.ok ? 'is-ok' : 'is-fail'}}">{{item.ok ? '✓' : '✕'}}</view>
+        <view class="step__body">
+          <view class="step__label">{{item.label}}</view>
+          <view class="step__detail">{{item.detail}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 数据与关于 -->
+  <view class="section-title">数据与关于</view>
+  <view class="card">
+    <view class="row-link" bindtap="onSave" hover-class="row-link--hover">
+      <text>保存当前配置</text>
+      <view class="row-link__value">
+        <text>{{saving ? '保存中…' : '点击保存'}}</text>
+      </view>
+    </view>
+    <view class="row-line"></view>
+    <view class="row-link" bindtap="onClearLocal" hover-class="row-link--hover">
+      <text>清空本机对话</text>
+      <view class="row-link__value">
+        <text>服务端记录保留</text>
+        <view class="chevron"></view>
+      </view>
+    </view>
+    <view class="row-line"></view>
+    <view class="row-link" bindtap="onReset" hover-class="row-link--hover">
+      <text>恢复默认配置</text>
+      <view class="chevron"></view>
+    </view>
+    <view class="row-line"></view>
+    <view class="row-link" bindtap="onAbout" hover-class="row-link--hover">
+      <text>关于</text>
+      <view class="row-link__value">
+        <text>v{{version}}</text>
+        <view class="chevron"></view>
+      </view>
+    </view>
+  </view>
+
+  <view class="foot-tip">
+    <text>连接方式：{{mode === 'cloud' ? '云托管' : (mode === 'proxy' ? '自建服务' : '直连调试')}}</text>
+    <text>凭证状态：{{tokenMasked}}</text>
+  </view>
+</view>
+
+<view class="footer-bar">
+  <view class="btn btn--primary btn--block {{saving ? 'is-disabled' : ''}}" bindtap="onSave">
+    {{saving ? '保存中…' : '保存配置'}}
+  </view>
+</view>

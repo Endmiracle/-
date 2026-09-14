@@ -1,0 +1,82 @@
+<!-- 用户消息 -->
+<view wx:if="{{item.role === 'user'}}" class="row row--user">
+  <view class="bubble bubble--user" bindlongpress="onLongPress">
+    <text user-select="{{true}}">{{item.content}}</text>
+  </view>
+</view>
+
+<!-- 助手消息 -->
+<view wx:else class="row row--assistant">
+  <image wx:if="{{avatarSrc}}" class="avatar avatar--image" src="{{avatarSrc}}" mode="aspectFill" />
+  <view wx:else class="avatar">{{avatarText}}</view>
+
+  <view class="assistant-body">
+    <view class="bubble bubble--assistant {{item.error && !item.content ? 'bubble--error' : ''}}" bindlongpress="onLongPress">
+      <!-- 等待首字 -->
+      <view wx:if="{{item.streaming && !item.content}}" class="dots">
+        <view class="dots__item"></view>
+        <view class="dots__item"></view>
+        <view class="dots__item"></view>
+      </view>
+
+      <!-- 正文 -->
+      <block wx:else>
+        <text class="bubble__text" user-select="{{true}}">{{item.content}}</text>
+        <text wx:if="{{item.streaming}}" class="caret"></text>
+      </block>
+
+      <!-- 出错且无内容 -->
+      <view wx:if="{{item.error && !item.content}}" class="bubble__error">
+        <text>{{item.error}}</text>
+      </view>
+    </view>
+
+    <!-- 生成中断提示 -->
+    <view wx:if="{{item.error && item.content}}" class="warn-line">
+      <text>回答中断：{{item.error}}</text>
+    </view>
+
+    <!-- 降级提示（未配置大模型） -->
+    <view wx:if="{{item.degraded}}" class="warn-line warn-line--info">
+      <text>当前为检索直出模式（服务端未配置大模型）</text>
+    </view>
+
+    <!-- 引用来源 -->
+    <block wx:if="{{item.references && item.references.total > 0}}">
+      <view class="refs-head" bindtap="onToggleRefs">
+        <view class="refs-head__icon">◎</view>
+        <text class="refs-head__text">
+          引用 {{item.references.total}} 个片段 · {{item.references.docCount}} 篇文档
+        </text>
+        <text class="refs-head__toggle">{{item.refsExpanded ? '收起' : '展开'}}</text>
+      </view>
+
+      <view wx:if="{{item.refsExpanded}}" class="refs-list">
+        <view
+          wx:for="{{item.references.items}}"
+          wx:for-item="ref"
+          wx:for-index="refIndex"
+          wx:key="key"
+          class="ref-item"
+          data-index="{{refIndex}}"
+          bindtap="onReferenceTap"
+        >
+          <view class="ref-item__head">
+            <text class="ref-item__index">{{refIndex + 1}}</text>
+            <text class="ref-item__doc">{{ref.docName}}</text>
+            <text wx:if="{{ref.similarityText}}" class="ref-item__score">{{ref.similarityText}}</text>
+          </view>
+          <view wx:if="{{ref.heading}}" class="ref-item__heading">{{ref.heading}}</view>
+          <view class="ref-item__content">{{ref.content}}</view>
+        </view>
+      </view>
+    </block>
+
+    <!-- 底部操作 -->
+    <view wx:if="{{!item.streaming}}" class="actions">
+      <text wx:if="{{item.time}}" class="actions__time">{{item.time}}</text>
+      <view class="actions__btn" catchtap="onCopy">复制</view>
+      <view wx:if="{{item.error}}" class="actions__btn" catchtap="onRetry">重试</view>
+    </view>
+  </view>
+</view>

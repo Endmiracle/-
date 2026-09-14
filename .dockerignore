@@ -1,0 +1,15 @@
+# 小程序代码不进镜像
+miniprogram/
+node_modules/
+.git/
+.workbuddy/
+
+# 本地运行产生的数据与密钥，避免污染镜像
+server/data/
+server/.env
+*.log
+*.tmp
+
+# 文档产物
+界面预览.html
+overview.md

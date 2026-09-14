@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "generated_at": "2026-09-11T09:07:13+08:00",
+  "source_documents": [
+    {
+      "original_path": "C:/Users/29555/Desktop/基本制度.docx",
+      "standardized_path": "knowledge_base/basic-regulations.md",
+      "topic": "羽衣电竞陪玩师等级与客服制度",
+      "scope": ["等级制度", "好评要求", "客服链接"],
+      "chunks_estimate": 7
+    },
+    {
+      "original_path": "C:/Users/29555/Desktop/羽衣电竞-陪玩师制度统一化.docx",
+      "standardized_path": "knowledge_base/esports-companion-regulations.md",
+      "topic": "羽衣电竞陪玩师制度统一化",
+      "scope": [
+        "总则",
+        "炸单规则",
+        "队内沟通",
+        "订单报备",
+        "打手规范",
+        "物资要求",
+        "罚款制度",
+        "服务态度"
+      ],
+      "chunks_estimate": 25
+    }
+  ],
+  "structure": {
+    "title_levels": ["H1", "H2", "H3", "H4"],
+    "list_style": "decimal",
+    "tables_used_for": ["等级对照", "炸单价格", "客服链接"],
+    "key_amounts_bold": true,
+    "urls_as_markdown_links": true
+  },
+  "ingestion_notes": {
+    "format": "Markdown",
+    "target_systems": ["RAGFlow", "常规向量数据库", "全文搜索"],
+    "chunk_strategy_hint": "按 H2 切分；表格行作为独立 chunk 利于罚款金额检索",
+    "language": "zh-CN"
+  }
+}

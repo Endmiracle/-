@@ -1,0 +1,285 @@
+page {
+  background: #0b0e1a;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* ============================================================
+ * 顶部信息条
+ * ============================================================ */
+
+.chat-bar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  padding: 20rpx 28rpx;
+  background: linear-gradient(180deg, #151a2d, #11162a);
+  border-bottom: 2rpx solid var(--line);
+}
+
+.chat-bar__avatar {
+  flex: none;
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 18rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #0b0e1a;
+  background: linear-gradient(135deg, #5b6cff, #8b5cf6);
+}
+
+.chat-bar__meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.chat-bar__name {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--text-1);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.chat-bar__sub {
+  margin-top: 4rpx;
+  font-size: 20rpx;
+  color: var(--text-3);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.chat-bar__btn {
+  flex: none;
+  padding: 10rpx 18rpx;
+  border-radius: 12rpx;
+  font-size: 22rpx;
+  color: var(--text-2);
+  background: var(--surface-2);
+  border: 2rpx solid var(--line);
+}
+
+.chat-bar__btn--hover {
+  opacity: 0.72;
+}
+
+/* ============================================================
+ * 未就绪引导
+ * ============================================================ */
+
+.block {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20rpx;
+  padding: 60rpx 60rpx 160rpx;
+  text-align: center;
+}
+
+.block__icon {
+  width: 104rpx;
+  height: 104rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48rpx;
+  font-weight: 600;
+  color: #fbbf24;
+  background: rgba(251, 191, 36, 0.12);
+  border: 2rpx solid rgba(251, 191, 36, 0.3);
+}
+
+.block__title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: var(--text-1);
+}
+
+.block__text {
+  font-size: 26rpx;
+  line-height: 1.8;
+  color: var(--text-3);
+}
+
+/* ============================================================
+ * 消息滚动区
+ * ============================================================ */
+
+.msg-scroll {
+  flex: 1;
+  min-height: 0;
+  padding: 32rpx 28rpx 0;
+}
+
+.msg-list {
+  padding-bottom: 8rpx;
+}
+
+.msg-bottom {
+  height: 24rpx;
+}
+
+/* ============================================================
+ * 欢迎区
+ * ============================================================ */
+
+.welcome {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16rpx;
+  padding: 80rpx 30rpx 40rpx;
+  text-align: center;
+}
+
+.welcome__logo {
+  width: 128rpx;
+  height: 128rpx;
+  border-radius: 36rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 52rpx;
+  font-weight: 600;
+  color: #0b0e1a;
+  background: linear-gradient(135deg, #5b6cff, #8b5cf6);
+  box-shadow: 0 12rpx 36rpx rgba(124, 92, 255, 0.32);
+}
+
+.welcome__title {
+  font-size: 38rpx;
+  font-weight: 600;
+}
+
+.welcome__desc {
+  max-width: 520rpx;
+  font-size: 26rpx;
+  line-height: 1.8;
+  color: var(--text-3);
+}
+
+.quick {
+  padding: 10rpx 6rpx 20rpx;
+}
+
+.quick__label {
+  margin-bottom: 18rpx;
+  padding-left: 8rpx;
+  font-size: 22rpx;
+  color: var(--text-4);
+}
+
+.quick__item {
+  margin-bottom: 16rpx;
+  padding: 22rpx 26rpx;
+  border-radius: var(--radius-m);
+  background: var(--surface);
+  border: 2rpx solid var(--line);
+  font-size: 27rpx;
+  color: var(--text-2);
+}
+
+.quick__item--hover {
+  background: var(--surface-2);
+  border-color: var(--brand-line);
+}
+
+/* ============================================================
+ * 输入区
+ * ============================================================ */
+
+.composer {
+  flex: none;
+  padding: 18rpx 28rpx;
+  padding-bottom: calc(18rpx + env(safe-area-inset-bottom));
+  background: rgba(17, 22, 42, 0.96);
+  border-top: 2rpx solid var(--line);
+}
+
+.composer__box {
+  display: flex;
+  align-items: flex-end;
+  gap: 16rpx;
+}
+
+.composer__input {
+  flex: 1;
+  min-width: 0;
+  max-height: 220rpx;
+  padding: 20rpx 24rpx;
+  border-radius: var(--radius-m);
+  background: var(--surface);
+  border: 2rpx solid var(--line);
+  color: var(--text-1);
+  font-size: 29rpx;
+  line-height: 1.55;
+}
+
+.composer__placeholder {
+  color: var(--text-4);
+}
+
+.composer__send {
+  flex: none;
+  min-width: 120rpx;
+  height: 76rpx;
+  padding: 0 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-m);
+  font-size: 27rpx;
+  font-weight: 600;
+  color: #0b0e1a;
+  background: linear-gradient(96deg, #5b6cff, #8b5cf6);
+}
+
+.composer__send--stop {
+  color: #f87171;
+  background: rgba(248, 113, 113, 0.14);
+  border: 2rpx solid rgba(248, 113, 113, 0.36);
+  font-weight: 500;
+}
+
+.composer__send--hover {
+  opacity: 0.82;
+}
+
+.composer__send.is-disabled {
+  opacity: 0.4;
+}
+
+.composer__tip {
+  margin-top: 12rpx;
+  text-align: center;
+  font-size: 20rpx;
+  color: var(--text-4);
+}
+
+/* ============================================================
+ * 品牌图（图片版头像与欢迎 logo）
+ * ============================================================ */
+
+.chat-bar__avatar {
+  background: #ffffff;
+  overflow: hidden;
+}
+
+/* 原为 CSS 绘制的品牌方块，现改为承载品牌图：按图片比例给一个白色卡片 */
+.welcome__logo {
+  width: 300rpx;
+  height: 208rpx;
+  border-radius: 28rpx;
+  background: #ffffff;
+  box-shadow: 0 12rpx 36rpx rgba(0, 0, 0, 0.42);
+  margin-bottom: 8rpx;
+}

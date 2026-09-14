@@ -1,0 +1,93 @@
+page {
+  background: #0b0e1a;
+}
+
+.hero {
+  margin: 0 -28rpx 24rpx;
+  padding: 28rpx 28rpx 32rpx;
+  background: linear-gradient(160deg, #241b52 0%, #123047 100%);
+  border-bottom: 2rpx solid var(--line);
+}
+
+.hero__title {
+  font-size: 38rpx;
+  font-weight: 600;
+  color: var(--text-1);
+}
+
+.hero__desc {
+  margin-top: 10rpx;
+  font-size: 24rpx;
+  line-height: 1.7;
+  color: var(--text-3);
+}
+
+/* ============================================================
+ * 会话卡片
+ * ============================================================ */
+
+.item {
+  margin-bottom: 18rpx;
+}
+
+.item--hover {
+  background: var(--surface-2);
+}
+
+.item--current {
+  border-color: rgba(34, 211, 238, 0.36);
+}
+
+.item__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16rpx;
+}
+
+.item__name {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  font-size: 29rpx;
+  font-weight: 500;
+  color: var(--text-1);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.item__badge {
+  flex: none;
+  padding: 2rpx 12rpx;
+  border-radius: 8rpx;
+  font-size: 19rpx;
+  color: #9db4ff;
+  background: rgba(34, 211, 238, 0.12);
+  border: 2rpx solid rgba(34, 211, 238, 0.3);
+}
+
+.item__preview {
+  margin-top: 14rpx;
+  font-size: 24rpx;
+  line-height: 1.7;
+  color: var(--text-3);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.item__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16rpx;
+  margin-top: 16rpx;
+  padding-top: 14rpx;
+  border-top: 2rpx solid var(--line-soft);
+  font-size: 21rpx;
+  color: var(--text-4);
+}
