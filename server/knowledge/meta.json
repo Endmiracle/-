@@ -24,6 +24,22 @@
         "服务态度"
       ],
       "chunks_estimate": 25
+    },
+    {
+      "original_path": "C:/Users/29555/Desktop/常见订单答疑.docx",
+      "standardized_path": "knowledge_base/order-faq.md",
+      "topic": "羽衣电竞常见订单答疑",
+      "scope": [
+        "狡兔六窟单",
+        "地图选择",
+        "复活点",
+        "清图单",
+        "丢包",
+        "红甲修",
+        "红头修",
+        "红判定"
+      ],
+      "chunks_estimate": 4
     }
   ],
   "structure": {
